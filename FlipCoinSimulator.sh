@@ -12,14 +12,25 @@ while :
 do
 	outCome=$((RANDOM%2))
 
-	if [[ $outCome -eq $Winner  && $HEAD_COUNT -lt 21 ]]
+	if [ $outCome -eq $Winner ]
 	then
+		
 		HEAD_COUNT=$((HEAD_COUNT + 1))
-	elif [[ $outCome -le $Loose  && $TAIL_COUNT -lt 21 ]]
+	elif [ $outCome -le $Loose ]
 	then
 		TAIL_COUNT=$((TAIL_COUNT +1 ))
+	fi
+	if [[ $HEAD_COUNT -ge 21 || $TAIL_COUNT -ge 21 ]]
+	then
+		if [[ `expr $TAIL_COUNT - $HEAD_COUNT` -gt 2 || `expr $HEAD_COUNT - $TAIL_COUNT` -gt 2 ]]
+		then	
+			break;
+		else
+			echo "Tie"
+			continue;
+		fi
 	else
-		break;
+		continue
 	fi
 done
 if [ $HEAD_COUNT -gt $TAIL_COUNT ]
